@@ -38,7 +38,8 @@ import soumya.megatronix.portal2023.PortalRestAPI.Portal.User.RD.Service.general
 import soumya.megatronix.portal2023.PortalRestAPI.Portal.User.RD.Service.general.TableTennisService;
 import soumya.megatronix.portal2023.PortalRestAPI.Portal.User.RD.Service.robotics.*;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -95,47 +96,112 @@ public class ProfileService {
     @Autowired
     private War15KgService roboWar15kgService;
 
+
     @Async
-    public CompletableFuture<ProfileModel> findProfile(String gid)throws Exception{
-        Optional<MrdModel> mrdModel = mrdRepository.findByGid(gid);
-        if(!mrdModel.isPresent()){
-            throw new Exception("Invalid gid");
+    public CompletableFuture<List<ProfileModel>> findProfile(String email)throws Exception{
+        List<ProfileModel> profileModels = new ArrayList<>();
+        Optional<List<MrdModel>> mrdModels = mrdRepository.findAllByEmail(email);
+        if (mrdModels.isEmpty())
+            throw new Exception("Invalid email");
+
+
+        for(MrdModel m : mrdModels.get()) {
+            Optional<MrdModel> mrdModel = mrdRepository.findByGid(m.getGid());
+            if (mrdModel.isEmpty()){
+                throw new Exception("Invalid gid");
+            }
+            ProfileModel profile = profileRepository.findByGid(m.getGid());
+            if (profile == null) {
+                CompletableFuture<ProfileModel> newProfile = addToProfile(m.getGid());
+                profileRepository.save(newProfile.join());
+                profileModels.add(newProfile.get());
+
+
+            } else {
+                CompletableFuture<ProfileModel> newProfile = addToProfile(m.getGid());
+
+                profile.setMegaArchTid(newProfile.get().getMegaArchTid());
+                if(newProfile.get().getMegaArchTid()!=null)
+                    profile.setMegaArchPaid(newProfile.get().isMegaArchPaid());
+
+                profile.setSetuBandhanTid(newProfile.get().getSetuBandhanTid());
+                if ( newProfile.get().getSetuBandhanTid()!=null )
+                    profile.setSetuBandhanPaid(newProfile.get().isSetuBandhanPaid());
+
+                profile.setTrackoteasureTid(newProfile.get().getTrackoteasureTid());
+                if ( newProfile.get().getTrackoteasureTid()!=null )
+                    profile.setTrackoteasurePaid(newProfile.get().isTrackoteasurePaid());
+
+                profile.setCodezenTid(newProfile.get().getCodezenTid());
+                if ( newProfile.get().getCodezenTid()!=null )
+                    profile.setCodezenPaid(newProfile.get().isCodezenPaid());
+
+                profile.setCodeQuestTid(newProfile.get().getCodeQuestTid());
+                if ( newProfile.get().getCodeQuestTid()!=null )
+                    profile.setCodeQuestPaid(newProfile.get().isCodeQuestPaid());
+
+                profile.setWebMindsTid(newProfile.get().getWebMindsTid());
+                if ( newProfile.get().getWebMindsTid()!=null )
+                    profile.setWebMindsPaid(newProfile.get().isWebMindsPaid());
+
+                profile.setElectriQuestTid(newProfile.get().getElectriQuestTid());
+                if ( newProfile.get().getElectriQuestTid()!=null )
+                    profile.setElectriQuestPaid(newProfile.get().isElectriQuestPaid());
+
+                profile.setElectrical2Tid(newProfile.get().getElectrical2Tid());
+                if ( newProfile.get().getElectrical2Tid()!=null )
+                    profile.setElectrical2Paid(newProfile.get().isElectrical2Paid());
+
+                profile.setBgmiLanTid(newProfile.get().getBgmiLanTid());
+                if ( newProfile.get().getBgmiLanTid()!=null )
+                    profile.setBgmiLanPaid(newProfile.get().isBgmiLanPaid());
+
+                profile.setValorantLanTid(newProfile.get().getValorantLanTid());
+                if ( newProfile.get().getValorantLanTid()!=null )
+                    profile.setValorantLanPaid(newProfile.get().isValorantLanPaid());
+
+                profile.setPesLanTid(newProfile.get().getPesLanTid());
+                if ( newProfile.get().getPesLanTid()!=null )
+                    profile.setPesLanPaid(newProfile.get().isPesLanPaid());
+
+                profile.setBingeQuizTid(newProfile.get().getBingeQuizTid());
+                if ( newProfile.get().getBingeQuizTid()!=null )
+                    profile.setBingeQuizPaid(newProfile.get().isBingeQuizPaid());
+
+                profile.setTableTennisTid(newProfile.get().getTableTennisTid());
+                if ( newProfile.get().getTableTennisTid()!=null )
+                    profile.setTableTennisPaid(newProfile.get().isTableTennisPaid());
+
+                profile.setCarromTid(newProfile.get().getCarromTid());
+                if ( newProfile.get().getCarromTid()!=null )
+                    profile.setCarromPaid(newProfile.get().isCarromPaid());
+
+                profile.setLineTrekkerTid(newProfile.get().getLineTrekkerTid());
+                if ( newProfile.get().getLineTrekkerTid()!=null )
+                    profile.setLineTrekkerPaid(newProfile.get().isLineTrekkerPaid());
+
+                profile.setTriathlonTid(newProfile.get().getTriathlonTid());
+                if ( newProfile.get().getTriathlonTid()!=null )
+                    profile.setTriathlonPaid(newProfile.get().isTriathlonPaid());
+
+                profile.setRoboKlassikerTid(newProfile.get().getRoboKlassikerTid());
+                if ( newProfile.get().getRoboKlassikerTid()!=null )
+                    profile.setRoboKlassikerPaid(newProfile.get().isRoboKlassikerPaid());
+
+                profile.setRoboWar8kgTid(newProfile.get().getRoboWar8kgTid());
+                if ( newProfile.get().getRoboWar8kgTid()!=null )
+                    profile.setRoboWar8kgPaid(newProfile.get().isRoboWar8kgPaid());
+
+                profile.setRoboWar15kgTid(newProfile.get().getRoboWar15kgTid());
+                if ( newProfile.get().getRoboWar15kgTid()!=null )
+                    profile.setRoboWar15kgPaid(newProfile.get().isRoboWar15kgPaid());
+
+                profileRepository.save(profile);
+                profileModels.add(profile);
+            }
         }
-        ProfileModel profile = profileRepository.findByGid(gid);
-        if(profile==null){
-            CompletableFuture<ProfileModel> newProfile = addToProfile(gid);
-            return CompletableFuture.completedFuture(profileRepository.save(newProfile.get()));
-        }
-        else {
-            CompletableFuture<ProfileModel> newProfile = addToProfile(gid);
 
-            profile.setMegaArchTid(newProfile.get().getMegaArchTid());
-            profile.setSetuBandhanTid(newProfile.get().getSetuBandhanTid());
-            profile.setTrackoteasureTid(newProfile.get().getTrackoteasureTid());
-
-            profile.setCodezenTid(newProfile.get().getCodezenTid());
-            profile.setCodeQuestTid(newProfile.get().getCodeQuestTid());
-            profile.setWebMindsTid(newProfile.get().getWebMindsTid());
-
-            profile.setElectriQuestTid(newProfile.get().getElectriQuestTid());
-            profile.setElectrical2Tid(newProfile.get().getElectrical2Tid());
-
-            profile.setBgmiLanTid(newProfile.get().getBgmiLanTid());
-            profile.setValorantLanTid(newProfile.get().getValorantLanTid());
-            profile.setPesLanTid(newProfile.get().getPesLanTid());
-
-            profile.setBingeQuizTid(newProfile.get().getBingeQuizTid());
-            profile.setTableTennisTid(newProfile.get().getTableTennisTid());
-            profile.setCarromTid(newProfile.get().getCarromTid());
-
-            profile.setLineTrekkerTid(newProfile.get().getLineTrekkerTid());
-            profile.setTriathlonTid(newProfile.get().getTriathlonTid());
-            profile.setRoboKlassikerTid(newProfile.get().getRoboKlassikerTid());
-            profile.setRoboWar8kgTid(newProfile.get().getRoboWar8kgTid());
-            profile.setRoboWar15kgTid(newProfile.get().getRoboWar15kgTid());
-            profileRepository.save(profile);
-            return CompletableFuture.completedFuture(profile);
-        }
+        return CompletableFuture.completedFuture(profileModels);
     }
 
     @Async
@@ -155,6 +221,7 @@ public class ProfileService {
             profile.setEmail(mrdModel.getEmail());
             profile.setPhoneNumber(mrdModel.getPhoneNumber());
             profile.setGid(mrdModel.getGid());
+            profile.setPaid(mrdModel.isPaid());
 
             //civil
             Optional<MegaArchModel> megaArchServiceOptional = megaArchService.findByGid(gid);
@@ -297,4 +364,6 @@ public class ProfileService {
         else
             return null;
     }
+
+
 }
