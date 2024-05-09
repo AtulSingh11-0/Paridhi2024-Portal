@@ -69,7 +69,31 @@ public class OTPService {
     public CompletableFuture<Boolean> sendOTPByEmail (String email, String otp, String name) {
         String subject = "OTP for Email verification";
         String message = "<html><body>" +
-                "<h1>Hello " + name + ",</h1>" +
+                "<h3>Hello " + name + ",</h3>" +
+                "<p>" +
+                "<br>" +
+                "Your OTP for Email verification is: <strong>" + otp + "</strong><br>" +
+                "<br>" +
+                "This OTP is valid for 5 minutes only.<br>" +
+                "<br>" +
+                "Best Regards,<br>" +
+                "<strong>Team Megatronix</strong>." +
+                "</p>" +
+                "</body></html>";
+
+        return emailService.sendEmail(email, subject, message)
+                .thenApplyAsync(result -> true)
+                .exceptionally(ex -> {
+                    System.out.println(ex.getMessage());
+                    return false;
+                });
+    }
+
+    @Async
+    public CompletableFuture<Boolean> sendOTPByEmailforProfile (String email, String otp) {
+        String subject = "OTP for Email verification";
+        String message = "<html><body>" +
+                "<h3>Hello ,</h3>" +
                 "<p>" +
                 "<br>" +
                 "Your OTP for Email verification is: <strong>" + otp + "</strong><br>" +

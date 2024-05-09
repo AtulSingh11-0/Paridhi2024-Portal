@@ -24,63 +24,58 @@ public class RoboticsCheckTidService {
     @Autowired
     private War15KgRepository war15KgRepository;
 
-    @Async
-    public CompletableFuture<LineTrekkerModel> checkLineTrekkerTid(
+    public LineTrekkerModel checkLineTrekkerTid(
             String tid
     ) {
         Optional<LineTrekkerModel> model = lineTrekkerRepository.findByTid(tid);
         if (model.isEmpty()) {
             throw new RuntimeException("No such TID found");
         } else {
-            return CompletableFuture.completedFuture(model.get());
+            return model.get();
         }
     }
 
-    @Async
-    public CompletableFuture<RoboKlassikerModel> checkRoboKlassikerTid(
+    public RoboKlassikerModel checkRoboKlassikerTid(
             String tid
     ) {
         Optional<RoboKlassikerModel> model = roboKlassikerRepository.findByTid(tid);
         if (model.isEmpty()) {
             throw new RuntimeException("No such TID found");
         } else {
-            return CompletableFuture.completedFuture(model.get());
+            return model.get();
         }
     }
 
-    @Async
-    public CompletableFuture<TriathlonModel> checkTriathlonTid(
+    public TriathlonModel checkTriathlonTid(
             String tid
     ) {
         Optional<TriathlonModel> model = triathlonRepository.findByTid(tid);
         if (model.isEmpty()) {
             throw new RuntimeException("No such TID found");
         } else {
-            return CompletableFuture.completedFuture(model.get());
+            return model.get();
         }
     }
 
-    @Async
-    public CompletableFuture<War8KgModel> checkWar8kgTid(
+    public War8KgModel checkWar8kgTid(
             String tid
     ) {
         Optional<War8KgModel> model = war8KgRepository.findByTid(tid);
         if (model.isEmpty()) {
             throw new RuntimeException("No such TID found");
         } else {
-            return CompletableFuture.completedFuture(model.get());
+            return model.get();
         }
     }
 
-    @Async
-    public CompletableFuture<War15KgModel> checkWar15KgTid(
+    public War15KgModel checkWar15KgTid(
             String tid
     ) {
         Optional<War15KgModel> model = war15KgRepository.findByTid(tid);
         if (model.isEmpty()) {
             throw new RuntimeException("No such TID found");
         } else {
-            return CompletableFuture.completedFuture(model.get());
+            return model.get();
         }
     }
 }

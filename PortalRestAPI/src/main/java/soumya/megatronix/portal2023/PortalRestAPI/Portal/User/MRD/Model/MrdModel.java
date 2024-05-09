@@ -52,7 +52,6 @@ public class MrdModel {
     @Email(message = "Invalid email format")
     private String email;
 
-    @NotBlank(message = "Phone number is required")
     @Pattern(regexp = "^[6-9]\\d{9}$", message = "Invalid Indian phone number")
     private String phoneNumber;
 
@@ -61,5 +60,4 @@ public class MrdModel {
     private  boolean paid=false;
 
     private boolean isEmailVerified=false;
-    private boolean isPhoneVerified=false;
 }

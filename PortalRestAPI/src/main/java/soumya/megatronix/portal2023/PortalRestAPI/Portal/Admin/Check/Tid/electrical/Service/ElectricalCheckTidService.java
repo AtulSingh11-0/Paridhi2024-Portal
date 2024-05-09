@@ -17,28 +17,26 @@ public class ElectricalCheckTidService {
     private ElectriQuestRepository electriQuestRepository;
     @Autowired
     private Electrical2Repository electrical2Repository;
-
-    @Async
-    public CompletableFuture<ElectriQuest> checkElectriQeustTid(
+    
+    public ElectriQuest checkElectriQeustTid(
             String tid
     ) {
         Optional<ElectriQuest> model = electriQuestRepository.findByTid(tid);
         if (model.isEmpty()) {
             throw new RuntimeException("No such TID found");
         } else {
-            return CompletableFuture.completedFuture(model.get());
+            return model.get();
         }
     }
 
-    @Async
-    public CompletableFuture<Electrical2> checkElectrical2Tid(
+    public Electrical2 checkElectrical2Tid(
             String tid
     ) {
         Optional<Electrical2> model = electrical2Repository.findByTid(tid);
         if (model.isEmpty()) {
             throw new RuntimeException("No such TID found");
         } else {
-            return CompletableFuture.completedFuture(model.get());
+            return model.get();
         }
     }
 }
