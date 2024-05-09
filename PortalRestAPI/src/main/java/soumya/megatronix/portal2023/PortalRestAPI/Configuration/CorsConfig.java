@@ -15,8 +15,8 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*")); // Allow requests from all origins
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow specific HTTP methods
+        config.setAllowedOrigins(List.of("https://msitparidhi.in")); // Allow requests from all origins
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT")); // Allow specific HTTP methods
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Allow specific headers including Authorization header
         config.setAllowCredentials(true); // Allow sending cookies along with the request
 
