@@ -209,7 +209,6 @@ public class LineTrekkerService {
         }
     }
 
-    @Async
     public List<String> getEmails (String tid) {
         Optional<LineTrekkerModel> model = robotics.findByTid(tid);
         Optional<MrdModel> user1 = repo.findByGid(model.get().getGid1());
