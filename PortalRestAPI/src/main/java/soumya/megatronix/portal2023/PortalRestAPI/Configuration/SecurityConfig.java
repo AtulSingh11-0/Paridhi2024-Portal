@@ -30,20 +30,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain ( HttpSecurity httpSecurity) throws Exception {
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> {
                 auth.requestMatchers(
-                        "/megatronix/paridhi/user/**",
-                        "/megatronix/paridhi/admin/registration",
-                        "/megatronix/paridhi/admin/login")
-                    .permitAll();
-                  auth.requestMatchers("/megatronix/paridhi/admin/**");
+                    "/megatronix/paridhi/admin/registration",
+                    "/megatronix/paridhi/admin/login"
+                ).permitAll();
+                auth.requestMatchers("/megatronix/paridhi/admin/**").authenticated();
+                auth.requestMatchers("/megatronix/paridhi/user/**").permitAll();
                 auth.anyRequest().authenticated();
-            }).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            ).authenticationProvider(authenticationProvider)
+            })
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();

@@ -18,7 +18,8 @@ public class UpdateGidService {
     @Autowired
     private EmailService emailService;
 
-    public MrdModel updateGid(String gid,Boolean paid) {
+    @Async
+    public CompletableFuture<MrdModel> updateGid(String gid,Boolean paid) {
 
         Optional<MrdModel> mrdModel = mrdRepository.findByGid(gid);
         if(mrdModel.isEmpty()) {
@@ -26,11 +27,11 @@ public class UpdateGidService {
         } else {
             mrdModel.get().setPaid(paid);
             emailService.sendRegistrationUpdateMail(
-                mrdModel.get().getEmail(),
-                gid,
-                mrdModel.get().getName()
+                    mrdModel.get().getEmail(),
+                    gid,
+                    mrdModel.get().getName()
             );
-            return mrdRepository.save(mrdModel.get());
+            return CompletableFuture.completedFuture(mrdRepository.save(mrdModel.get()));
         }
     }
 }
